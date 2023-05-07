@@ -1,4 +1,3 @@
-import csv
 import requests
 from bs4 import BeautifulSoup
 import concurrent.futures
@@ -9,7 +8,7 @@ DEFAULT_HEADERS = {
 }
 
 class IMDbScraper:
-    def __init__(self, url: str, headers: dict):
+    def __init__(self, url: str, headers: dict = DEFAULT_HEADERS):
         self.url = url
         self.headers = headers
 
@@ -49,16 +48,3 @@ class IMDbScraper:
         summary_pageelement = movie_soup.find("span", {"data-testid": "plot-xs_to_m"})
         summary = summary_pageelement.text.strip()
         return summary
-
-
-if __name__ == "__main__":
-    url = "https://www.imdb.com/chart/top"
-    scraper = IMDbScraper(url, DEFAULT_HEADERS)
-    top_movies = scraper.scrape_top_movies()
-
-    with open("top_movies.csv", "w", newline="", encoding="utf-8") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Title", "Rating", "Summary"])
-        writer.writerows(top_movies)
-
-    print("Data scraped successfully and stored in top_movies.csv")
