@@ -32,3 +32,13 @@ python main.py
 ```
 
 The script will store the data in a CSV file named `top_movies.csv` in the same directory.
+
+
+## Tests
+
+To run the tests in the `tests` directory, execute the following command:
+```shell
+pytest
+```
+
+Make sure the virtual environment is activated beforehand. You can run this command in the root directory.
