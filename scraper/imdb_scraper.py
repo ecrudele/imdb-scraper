@@ -2,18 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 import concurrent.futures
 
+BASE_URL = "https://www.imdb.com"
+
 # HTTP requests should have a header like this one as a way to avoid "403 Forbidden" responses
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
 }
 
 class IMDbScraper:
-    def __init__(self, url: str, headers: dict = DEFAULT_HEADERS):
-        self.url = url
+    def __init__(self, url: str = BASE_URL, headers: dict = DEFAULT_HEADERS):
+        self.base_url = url
         self.headers = headers
 
     def scrape_top_movies(self, amount: int = 10) -> list:
-        response = self.http_get_request(self.url)
+        top_movies_url = f"{self.base_url}/chart/top"
+        response = self.http_get_request(top_movies_url)
         soup = BeautifulSoup(response.text, "html.parser")
         rows = self.get_rows(amount, soup)
 
@@ -36,7 +39,7 @@ class IMDbScraper:
         title = title_column.a.text
         rating = row.find("td", {"class": "ratingColumn imdbRating"}).strong.text
 
-        movie_url = "https://www.imdb.com" + title_column.a["href"]
+        movie_url = f"{self.base_url}{title_column.a['href']}"
         summary = self.get_summary(movie_url)
         
         return [title, rating, summary]

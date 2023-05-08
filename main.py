@@ -2,8 +2,7 @@ import csv
 from scraper.imdb_scraper import IMDbScraper
 
 if __name__ == "__main__":
-    url = "https://www.imdb.com/chart/top"
-    scraper = IMDbScraper(url)
+    scraper = IMDbScraper()
     top_movies = scraper.scrape_top_movies()
 
     with open("top_movies.csv", "w", newline="", encoding="utf-8") as file:
